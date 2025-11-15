@@ -35,6 +35,14 @@ public class AjusteTextoTest
 
         result.Should().Be("abc\ndef\nghi\nj");
     }
+    
+    [Fact]
+    public void e()
+    {
+        var result = Wrap("word word", 3);
+
+        result.Should().Be("wor\nd\nwor\nd");
+    }
 
     private static string Wrap(string text, int col)
     {
