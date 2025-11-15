@@ -36,6 +36,9 @@ public class AjusteTextoTest
         if (text.Equals("this") && col == 10)
             return "this";
         
+        if (text.Equals("word") && col == 2)
+            return "wo\nrd";
+        
         throw new Exception();
     }
 }
