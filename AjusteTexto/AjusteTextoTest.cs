@@ -12,75 +12,44 @@ public class AjusteTextoTest
         result.Should().Be("");
     }
     
-    [Fact]
-    public void b()
+    [Theory]
+    [InlineData("this",10,"this")]
+    [InlineData("word",2,"wo\nrd")]
+    [InlineData("abcdefghij",3,"abc\ndef\nghi\nj")]
+    public void b_c_d(string texto, int col, string textoEsperado)
     {
-        var result = Wrap("this", 10);
+        var result = Wrap(texto, col);
 
-        result.Should().Be("this");
+        result.Should().Be(textoEsperado);
     } 
     
-    [Fact]
-    public void c()
+    [Theory]
+    [InlineData("word word",3,"wor\nd\nwor\nd")]
+    [InlineData("word word",6,"word\nword")]
+    [InlineData("word word",5,"word\nword")]
+    public void e_f_f2(string texto, int col, string textoEsperado)
     {
-        var result = Wrap("word", 2);
+        var result = Wrap(texto, col);
 
-        result.Should().Be("wo\nrd");
+        result.Should().Be(textoEsperado);
     } 
     
-    [Fact]
-    public void d()
+    [Theory]
+    [InlineData("word word word",6,"word\nword\nword")]
+    [InlineData("word word word",11,"word word\nword")]
+    [InlineData("word word word word word word word word",16,"word word word\nword word word\nword word")]
+    public void g_h_i(string texto, int col, string textoEsperado)
     {
-        var result = Wrap("abcdefghij", 3);
+        var result = Wrap(texto, col);
 
-        result.Should().Be("abc\ndef\nghi\nj");
-    }
-    
-    [Fact]
-    public void e()
-    {
-        var result = Wrap("word word", 3);
-
-        result.Should().Be("wor\nd\nwor\nd");
-    }
-
-    [Fact]
-    public void f()
-    {
-        var result = Wrap("word word", 6);
-
-        result.Should().Be("word\nword");
-    }   
-    
-    [Fact]
-    public void f2()
-    {
-        var result = Wrap("word word", 5);
-
-        result.Should().Be("word\nword");
-    }
-    
-    [Fact]
-    public void g()
-    {
-        var result = Wrap("word word word", 6);
-
-        result.Should().Be("word\nword\nword");
-    }
-    
-    [Fact]
-    public void h()
-    {
-        var result = Wrap("word word word", 11);
-
-        result.Should().Be("word word\nword");
-    }
+        result.Should().Be(textoEsperado);
+    } 
     
     private static string Wrap(string text, int col)
     {
         const string saltoLinea = "\n";
         
-        if (TextoEstaVacio(text))
+        if (EstaVacio(text))
             return "";
 
         return ContieneEspacios(text) ? DividirTextoConEspacios(text , col, saltoLinea) : DividirPalabra(text,col, saltoLinea);
@@ -94,7 +63,7 @@ public class AjusteTextoTest
         {
             string palabra = DividirPalabra(palabraOriginal, cantidadMaximaCaracteres, saltoLinea);
 
-            if (TextoEstaVacio(textoDivido))
+            if (EstaVacio(textoDivido))
             {
                 textoDivido = palabra;
                 continue;
@@ -125,7 +94,7 @@ public class AjusteTextoTest
     }
    
     private static bool ContieneEspacios(string text) => text.Contains(' ');
-    private static bool TextoEstaVacio(string textoDivido) => string.IsNullOrEmpty(textoDivido);
+    private static bool EstaVacio(string textoDivido) => string.IsNullOrEmpty(textoDivido);
     private static bool ContieneSaltoDeLinea(string textoDivido, string saltoLinea) => textoDivido.Contains(saltoLinea);
     private static string ObtenerUltimaPalabraPorSaltoDeLinea(string textoDivido, string saltoLinea) => textoDivido.Substring(textoDivido.LastIndexOf(saltoLinea) + 1);
     private static string ObtenerUltimaPalabra(string textoDivido, string saltoLinea) =>
