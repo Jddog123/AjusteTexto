@@ -38,18 +38,20 @@ public class AjusteTextoTest
 
     private static string Wrap(string text, int col)
     {
-        if (string.IsNullOrEmpty(text))
-            return "";
-
-        if (text.Equals("this") && col == 10)
-            return "this";
+        return string.IsNullOrEmpty(text) ? "" : DividirPalabra(text,col);
+    }
+    
+    private static string DividirPalabra(string texto, int cantidadMaximaCaracteres)
+    {
+        var palabras = new List<string>();
+        for (int posicionCaracter = 0; posicionCaracter < texto.Length; posicionCaracter += cantidadMaximaCaracteres)
+        {
+            int cantidadCaracteresRestantes = texto.Length - posicionCaracter;
+            int cantidadCaracteresDividir = Math.Min(cantidadMaximaCaracteres, cantidadCaracteresRestantes);
+            
+            palabras.Add(texto.Substring(posicionCaracter, cantidadCaracteresDividir));
+        }
         
-        if (text.Equals("word") && col == 2)
-            return "wo\nrd";
-        
-        if (text.Equals("abcdefghij") && col == 3)
-            return "abc\ndef\nghi\nj";
-        
-        throw new Exception();
+        return string.Join("\n", palabras);
     }
 }
