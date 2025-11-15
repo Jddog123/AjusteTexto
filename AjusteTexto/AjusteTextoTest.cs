@@ -80,13 +80,11 @@ public class AjusteTextoTest
     {
         const string saltoLinea = "\n";
         
-        if (string.IsNullOrEmpty(text))
+        if (TextoEstaVacio(text))
             return "";
 
         return ContieneEspacios(text) ? DividirTextoConEspacios(text , col, saltoLinea) : DividirPalabra(text,col, saltoLinea);
     }
-
-    private static bool ContieneEspacios(string text) => text.Contains(' ');
 
     private static string DividirTextoConEspacios(string texto, int cantidadMaximaCaracteres, string saltoLinea)
     {
@@ -96,29 +94,22 @@ public class AjusteTextoTest
         {
             string palabra = DividirPalabra(palabraOriginal, cantidadMaximaCaracteres, saltoLinea);
 
-            if (string.IsNullOrEmpty(textoDivido))
+            if (TextoEstaVacio(textoDivido))
             {
                 textoDivido = palabra;
                 continue;
             }
 
-            var ultimaPalabra = textoDivido.Contains(saltoLinea)
-                ? textoDivido.Substring(textoDivido.LastIndexOf(saltoLinea) + 1)
-                : textoDivido;
+            textoDivido += PalabraMenorOIgualACantidadMaxima(cantidadMaximaCaracteres, palabra, textoDivido,saltoLinea)
+                ? " "
+                : saltoLinea;
 
-            if (ultimaPalabra.Length + 1 + palabra.Length <= cantidadMaximaCaracteres)
-            {
-                textoDivido += " " + palabra;
-            }
-            else
-            {
-                textoDivido += saltoLinea + palabra;
-            }
+            textoDivido += palabra;
         }
 
         return textoDivido;
     }
-    
+
     private static string DividirPalabra(string texto, int cantidadMaximaCaracteres, string saltoLinea)
     {
         var palabras = new List<string>();
@@ -131,5 +122,20 @@ public class AjusteTextoTest
         }
         
         return string.Join(saltoLinea, palabras);
+    }
+   
+    private static bool ContieneEspacios(string text) => text.Contains(' ');
+    private static bool TextoEstaVacio(string textoDivido) => string.IsNullOrEmpty(textoDivido);
+    private static bool ContieneSaltoDeLinea(string textoDivido, string saltoLinea) => textoDivido.Contains(saltoLinea);
+    private static string ObtenerUltimaPalabraPorSaltoDeLinea(string textoDivido, string saltoLinea) => textoDivido.Substring(textoDivido.LastIndexOf(saltoLinea) + 1);
+    private static string ObtenerUltimaPalabra(string textoDivido, string saltoLinea) =>
+        ContieneSaltoDeLinea(textoDivido, saltoLinea)
+            ? ObtenerUltimaPalabraPorSaltoDeLinea(textoDivido, saltoLinea)
+            : textoDivido;
+    private static bool PalabraMenorOIgualACantidadMaxima(int cantidadMaximaCaracteres, string palabra, string textoDivido, string saltoLinea)
+    {
+        string ultimaPalabra = ObtenerUltimaPalabra(textoDivido, saltoLinea);
+        
+        return ultimaPalabra.Length + 1 + palabra.Length <= cantidadMaximaCaracteres;
     }
 }
