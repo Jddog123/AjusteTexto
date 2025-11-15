@@ -47,6 +47,9 @@ public class AjusteTextoTest
         if (text.Equals("word") && col == 2)
             return "wo\nrd";
         
+        if (text.Equals("abcdefghij") && col == 3)
+            return "abc\ndef\nghi\nj";
+        
         throw new Exception();
     }
 }
