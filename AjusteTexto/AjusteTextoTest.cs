@@ -84,29 +84,11 @@ public class AjusteTextoTest
     {
         string textoDivido = string.Empty;
 
-        var palabras = texto.Split(' ');
-
-        if (palabras.Length >= 2)
+        foreach (var palabraOriginal in texto.Split(' '))
         {
-            if (palabras[0].Length <= cantidadMaximaCaracteres)
-                textoDivido = palabras[0];
-            else
-                textoDivido += DividirPalabra(palabras[0], cantidadMaximaCaracteres, saltoLinea);
-
-            if (palabras[1].Length <= cantidadMaximaCaracteres)
-                textoDivido += saltoLinea + palabras[1];
-            else
-                textoDivido += saltoLinea + DividirPalabra(palabras[1], cantidadMaximaCaracteres, saltoLinea);
+            textoDivido += (string.IsNullOrEmpty(textoDivido)? "" : "\n") + DividirPalabra(palabraOriginal, cantidadMaximaCaracteres, saltoLinea);
         }
 
-        if (palabras.Length == 3)
-        {
-            if (palabras[2].Length <= cantidadMaximaCaracteres)
-                textoDivido += saltoLinea + palabras[2];
-            else
-                textoDivido += saltoLinea + DividirPalabra(palabras[2], cantidadMaximaCaracteres, saltoLinea);
-        }
-        
         return textoDivido;
     }
     
