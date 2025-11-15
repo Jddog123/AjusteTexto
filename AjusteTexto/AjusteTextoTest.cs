@@ -14,6 +14,9 @@ public class AjusteTextoTest
 
     private static string Wrap(string text, int col)
     {
+        if (string.IsNullOrEmpty(text))
+            return "";
+        
         throw new Exception();
     }
 }
