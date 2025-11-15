@@ -68,6 +68,14 @@ public class AjusteTextoTest
         result.Should().Be("word\nword\nword");
     }
     
+    [Fact]
+    public void h()
+    {
+        var result = Wrap("word word word", 11);
+
+        result.Should().Be("word word\nword");
+    }
+    
     private static string Wrap(string text, int col)
     {
         const string saltoLinea = "\n";
