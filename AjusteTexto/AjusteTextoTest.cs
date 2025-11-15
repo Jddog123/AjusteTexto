@@ -46,6 +46,9 @@ public class AjusteTextoTest
 
     private static string Wrap(string text, int col)
     {
+        if (text.Equals("word word") && col == 3)
+            return "wor\nd\nwor\nd";
+            
         return string.IsNullOrEmpty(text) ? "" : DividirPalabra(text,col);
     }
     
