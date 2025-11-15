@@ -94,7 +94,26 @@ public class AjusteTextoTest
 
         foreach (var palabraOriginal in texto.Split(' '))
         {
-            textoDivido += (string.IsNullOrEmpty(textoDivido)? "" : "\n") + DividirPalabra(palabraOriginal, cantidadMaximaCaracteres, saltoLinea);
+            string palabra = DividirPalabra(palabraOriginal, cantidadMaximaCaracteres, saltoLinea);
+
+            if (string.IsNullOrEmpty(textoDivido))
+            {
+                textoDivido = palabra;
+                continue;
+            }
+
+            var ultimaPalabra = textoDivido.Contains(saltoLinea)
+                ? textoDivido.Substring(textoDivido.LastIndexOf(saltoLinea) + 1)
+                : textoDivido;
+
+            if (ultimaPalabra.Length + 1 + palabra.Length <= cantidadMaximaCaracteres)
+            {
+                textoDivido += " " + palabra;
+            }
+            else
+            {
+                textoDivido += saltoLinea + palabra;
+            }
         }
 
         return textoDivido;
