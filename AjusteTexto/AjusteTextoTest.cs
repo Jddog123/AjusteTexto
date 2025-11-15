@@ -65,7 +65,7 @@ public class AjusteTextoTest
         if (text.Equals("word word") && col == 3)
             return "wor\nd\nwor\nd";
         
-        if (text.Equals("word word") && col == 6)
+        if (text.Equals("word word") && (col == 5 || col == 6))
             return "word\nword";
             
         return string.IsNullOrEmpty(text) ? "" : DividirPalabra(text,col);
