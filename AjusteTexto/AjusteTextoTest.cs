@@ -62,16 +62,37 @@ public class AjusteTextoTest
     
     private static string Wrap(string text, int col)
     {
-        if (text.Equals("word word") && col == 3)
-            return "wor\nd\nwor\nd";
+        const string saltoLinea = "\n";
         
-        if (text.Equals("word word") && (col == 5 || col == 6))
-            return "word\nword";
-            
-        return string.IsNullOrEmpty(text) ? "" : DividirPalabra(text,col);
+        if (string.IsNullOrEmpty(text))
+            return "";
+
+        return ContieneEspacios(text) ? DividirTextoConEspacios(text , col, saltoLinea) : DividirPalabra(text,col, saltoLinea);
+    }
+
+    private static bool ContieneEspacios(string text) => text.Contains(' ');
+
+    private static string DividirTextoConEspacios(string texto, int cantidadMaximaCaracteres, string saltoLinea)
+    {
+        string textoDivido = string.Empty;
+
+        var palabras = texto.Split(' ');
+
+        if (palabras[0].Length <= cantidadMaximaCaracteres)
+            textoDivido = palabras[0];
+        else
+            textoDivido += DividirPalabra(palabras[0], cantidadMaximaCaracteres, saltoLinea);
+
+        
+        if (palabras[1].Length <= cantidadMaximaCaracteres)
+            textoDivido += saltoLinea + palabras[1];
+        else
+            textoDivido += saltoLinea + DividirPalabra(palabras[1], cantidadMaximaCaracteres, saltoLinea);
+        
+        return textoDivido;
     }
     
-    private static string DividirPalabra(string texto, int cantidadMaximaCaracteres)
+    private static string DividirPalabra(string texto, int cantidadMaximaCaracteres, string saltoLinea)
     {
         var palabras = new List<string>();
         for (int posicionCaracter = 0; posicionCaracter < texto.Length; posicionCaracter += cantidadMaximaCaracteres)
@@ -82,6 +103,6 @@ public class AjusteTextoTest
             palabras.Add(texto.Substring(posicionCaracter, cantidadCaracteresDividir));
         }
         
-        return string.Join("\n", palabras);
+        return string.Join(saltoLinea, palabras);
     }
 }
